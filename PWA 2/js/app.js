@@ -17,29 +17,20 @@ const noResultsEl = document.getElementById("no-results");
 const overlayEl = document.getElementById("detail-overlay");
 const closeBtn = document.getElementById("detail-close");
 
-closeBtn.addEventListener("click", closeDetail);
-overlayEl.addEventListener("click", (e) => {
-  if (e.target === overlayEl) closeDetail();
-});
-
 init();
 
 async function init() {
+  const data = await fetch("data/orders.json").then((res) => res.json());
+  ORDERS = data.pedidos;
+  DESTINO = data.destino;
+
+  renderOrders(ORDERS);
+
   searchInput.addEventListener("input", onSearch);
-
-  try {
-    const response = await fetch("data/orders.json");
-    if (!response.ok) throw new Error(`No se pudo cargar orders.json (${response.status})`);
-
-    const data = await response.json();
-    ORDERS = data.pedidos;
-    DESTINO = data.destino;
-    renderOrders(ORDERS);
-  } catch (error) {
-    console.error("Error al cargar los pedidos:", error);
-    noResultsEl.hidden = false;
-    noResultsEl.textContent = "No se pudieron cargar los pedidos.";
-  }
+  closeBtn.addEventListener("click", closeDetail);
+  overlayEl.addEventListener("click", (e) => {
+    if (e.target === overlayEl) closeDetail();
+  });
 }
 
 function renderOrders(list) {
@@ -107,30 +98,67 @@ function closeDetail() {
   document.body.style.overflow = "";
 }
 
-function renderMap(pedido) {
+const routeCache = {}; // evita volver a pedir la misma ruta si reabres el pedido
+
+async function renderMap(pedido) {
   const origenLatLng = [pedido.origen.lat, pedido.origen.lng];
   const destinoLatLng = [DESTINO.lat, DESTINO.lng];
-  const actualLatLng = interpolate(origenLatLng, destinoLatLng, pedido.progreso);
 
   if (!map) {
     map = L.map("map");
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "&copy; OpenStreetMap contributors",
+    }).addTo(map);
   }
 
-  // Limpia capas de un pedido anterior
+  // Limpia capas del pedido anterior
   [routeLine, originMarker, destMarker, currentMarker].forEach((layer) => {
     if (layer) map.removeLayer(layer);
   });
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: "&copy; OpenStreetMap contributors",
-  }).addTo(map);
-
+  // Mientras llega la ruta real, muestra algo de inmediato
   routeLine = L.polyline([origenLatLng, destinoLatLng], {
+    color: "#94a3b8",
+    weight: 2,
+    dashArray: "4 8",
+  }).addTo(map);
+  map.fitBounds(routeLine.getBounds(), { padding: [30, 30] });
+  setTimeout(() => map.invalidateSize(), 150);
+
+  addOriginDestMarkers(pedido, origenLatLng, destinoLatLng);
+
+  // Obtiene la ruta real por carretera (o cae a línea recta si falla)
+  let routeCoords;
+  try {
+    routeCoords = await getRoadRoute(pedido.id, origenLatLng, destinoLatLng);
+  } catch (err) {
+    console.warn("No se pudo obtener la ruta real; se muestra una línea provisional:", err);
+    routeCoords = [origenLatLng, destinoLatLng];
+  }
+
+  map.removeLayer(routeLine);
+  routeLine = L.polyline(routeCoords, {
     color: "#1e3a8a",
-    weight: 3,
-    dashArray: "6 8",
+    weight: 4,
   }).addTo(map);
 
+  const actualLatLng = pointAlongRoute(routeCoords, pedido.progreso);
+
+  const truckIcon = L.divIcon({
+    html: "🚚",
+    className: "truck-icon",
+    iconSize: [24, 24],
+  });
+
+  currentMarker = L.marker(actualLatLng, { icon: truckIcon })
+    .addTo(map)
+    .bindTooltip(`Paquete en camino (${Math.round(pedido.progreso * 100)}%)`)
+    .openTooltip();
+
+  map.fitBounds(routeLine.getBounds(), { padding: [30, 30] });
+}
+
+function addOriginDestMarkers(pedido, origenLatLng, destinoLatLng) {
   originMarker = L.circleMarker(origenLatLng, {
     radius: 7,
     color: "#6b7280",
@@ -148,22 +176,67 @@ function renderMap(pedido) {
   })
     .addTo(map)
     .bindTooltip(`Destino: ${DESTINO.ciudad}`);
+}
 
-  const truckIcon = L.divIcon({
-    html: "🚚",
-    className: "truck-icon",
-    iconSize: [24, 24],
-  });
+// Pide la geometría real de la ruta por carretera al servicio público de OSRM
+async function getRoadRoute(pedidoId, origenLatLng, destinoLatLng) {
+  if (routeCache[pedidoId]) return routeCache[pedidoId];
 
-  currentMarker = L.marker(actualLatLng, { icon: truckIcon })
-    .addTo(map)
-    .bindTooltip(`Paquete en camino (${Math.round(pedido.progreso * 100)}%)`)
-    .openTooltip();
+  const [oLat, oLng] = origenLatLng;
+  const [dLat, dLng] = destinoLatLng;
+  const url = `https://router.project-osrm.org/route/v1/driving/${oLng},${oLat};${dLng},${dLat}?overview=full&geometries=geojson`;
 
-  map.fitBounds(routeLine.getBounds(), { padding: [30, 30] });
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`OSRM respondió ${res.status}`);
 
-  // Leaflet necesita recalcular el tamaño si el contenedor estaba oculto
-  setTimeout(() => map.invalidateSize(), 150);
+  const data = await res.json();
+  if (data.code !== "Ok" || !data.routes?.length) {
+    throw new Error("OSRM no devolvió una ruta válida");
+  }
+
+  // GeoJSON viene como [lng, lat]; Leaflet necesita [lat, lng]
+  const coords = data.routes[0].geometry.coordinates.map(([lng, lat]) => [lat, lng]);
+  routeCache[pedidoId] = coords;
+  return coords;
+}
+
+// Ubica el punto sobre la ruta real que corresponde a una fracción del trayecto (0–1),
+// avanzando por la distancia acumulada de cada segmento en vez de solo por índice.
+function pointAlongRoute(routeCoords, fraction) {
+  const segmentLengths = [];
+  let totalLength = 0;
+
+  for (let i = 0; i < routeCoords.length - 1; i++) {
+    const d = haversineDistance(routeCoords[i], routeCoords[i + 1]);
+    segmentLengths.push(d);
+    totalLength += d;
+  }
+
+  const targetDistance = totalLength * fraction;
+  let accumulated = 0;
+
+  for (let i = 0; i < segmentLengths.length; i++) {
+    if (accumulated + segmentLengths[i] >= targetDistance) {
+      const remaining = targetDistance - accumulated;
+      const t = segmentLengths[i] === 0 ? 0 : remaining / segmentLengths[i];
+      return interpolate(routeCoords[i], routeCoords[i + 1], t);
+    }
+    accumulated += segmentLengths[i];
+  }
+
+  return routeCoords[routeCoords.length - 1];
+}
+
+// Distancia aproximada en metros entre dos coordenadas [lat, lng] (fórmula haversine)
+function haversineDistance([lat1, lng1], [lat2, lng2]) {
+  const R = 6371000;
+  const toRad = (deg) => (deg * Math.PI) / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(a));
 }
 
 // Interpolación lineal simple entre dos coordenadas [lat, lng]
