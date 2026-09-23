@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Incidencias · Gestor de Reportes</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0f766e" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- ---------- Pantalla de login (rol simulado) ---------- -->
+  <div id="login-screen" class="login-screen">
+    <div class="login-card">
+      <span class="login-eyebrow mono">Gestor de Reportes de Incidencias</span>
+      <h1>Inicia sesión</h1>
+      <p class="login-hint">Elige tu rol para esta sesión. Es un inicio de sesión simulado para la práctica — no requiere contraseña.</p>
+
+      <label class="field-label" for="login-name">Nombre</label>
+      <input type="text" id="login-name" class="text-input" placeholder="Tu nombre" autocomplete="off" />
+
+      <span class="field-label">Rol</span>
+      <div class="role-options" id="role-options">
+        <button type="button" class="role-btn" data-role="usuario">
+          <span class="role-btn__title">Usuario</span>
+          <span class="role-btn__desc">Reporta incidencias y da seguimiento</span>
+        </button>
+        <button type="button" class="role-btn" data-role="tecnico">
+          <span class="role-btn__title">Técnico</span>
+          <span class="role-btn__desc">Atiende y actualiza reportes</span>
+        </button>
+        <button type="button" class="role-btn" data-role="admin">
+          <span class="role-btn__title">Admin</span>
+          <span class="role-btn__desc">Supervisa todo el sistema</span>
+        </button>
+      </div>
+
+      <button type="button" id="login-submit" class="btn-primary" disabled>Entrar</button>
+    </div>
+  </div>
+
+  <!-- ---------- App principal ---------- -->
+  <div id="app" class="app" hidden>
+
+    <header class="topbar">
+      <div class="topbar__brand">
+        <span class="topbar__logo">🛠️</span>
+        <span class="topbar__title">Incidencias</span>
+      </div>
+
+      <div class="topbar__right">
+        <button id="notif-btn" class="btn-ghost mono" type="button">Activar notificaciones</button>
+        <div class="user-chip">
+          <span id="user-name" class="user-chip__name"></span>
+          <span id="user-role" class="user-chip__role mono"></span>
+        </div>
+        <button id="logout-btn" class="btn-ghost" type="button" aria-label="Cerrar sesión">Salir</button>
+      </div>
+    </header>
+
+    <main id="view-root" class="view-root">
+      <!-- Las vistas por rol se inyectan aquí -->
+    </main>
+
+    <!-- Panel de detalle / actualización de reporte -->
+    <div id="detail-overlay" class="detail-overlay" hidden>
+      <div class="detail-panel">
+        <button id="detail-close" class="detail-panel__close" aria-label="Cerrar">✕</button>
+        <div id="detail-content"><!-- inyectado por JS --></div>
+      </div>
+    </div>
+
+    <!-- Toast de confirmación -->
+    <div id="toast" class="toast" hidden></div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script src="js/register-sw.js"></script>
+</body>
+</html>
