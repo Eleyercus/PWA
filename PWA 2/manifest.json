@@ -1,0 +1,23 @@
+{
+  "name": "TrackShop - Seguimiento de Paquetes",
+  "short_name": "TrackShop",
+  "description": "Rastrea tus pedidos en tiempo real hasta Cadereyta Jiménez, Nuevo León.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f6fb",
+  "theme_color": "#1e3a8a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

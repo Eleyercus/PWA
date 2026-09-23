@@ -1,0 +1,61 @@
+{
+  "destino": {
+    "ciudad": "Cadereyta Jiménez, Nuevo León",
+    "lat": 25.5911,
+    "lng": -99.9967
+  },
+  "pedidos": [
+    {
+      "id": "PWA2-0001",
+      "producto": "Monitor LED 24'' Full HD",
+      "entidad": "Estafeta",
+      "estado": "En tránsito",
+      "fechaEstimada": "26/09/2026",
+      "origen": {
+        "ciudad": "Guadalajara, Jalisco",
+        "lat": 20.6597,
+        "lng": -103.3496
+      },
+      "progreso": 0.35
+    },
+    {
+      "id": "PWA2-0002",
+      "producto": "Teclado mecánico RGB",
+      "entidad": "DHL",
+      "estado": "En tránsito",
+      "fechaEstimada": "25/09/2026",
+      "origen": {
+        "ciudad": "Ciudad de México",
+        "lat": 19.4326,
+        "lng": -99.1332
+      },
+      "progreso": 0.62
+    },
+    {
+      "id": "PWA2-0003",
+      "producto": "Audífonos inalámbricos",
+      "entidad": "FedEx",
+      "estado": "En tránsito",
+      "fechaEstimada": "27/09/2026",
+      "origen": {
+        "ciudad": "Tijuana, Baja California",
+        "lat": 32.5149,
+        "lng": -117.0382
+      },
+      "progreso": 0.18
+    },
+    {
+      "id": "PWA2-0004",
+      "producto": "Silla ergonómica de oficina",
+      "entidad": "Paquetexpress",
+      "estado": "En tránsito",
+      "fechaEstimada": "24/09/2026",
+      "origen": {
+        "ciudad": "Mérida, Yucatán",
+        "lat": 20.9674,
+        "lng": -89.5926
+      },
+      "progreso": 0.81
+    }
+  ]
+}

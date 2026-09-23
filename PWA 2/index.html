@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PWA 2 · Seguimiento de Paquetes</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#1e3a8a" />
+
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <!-- Leaflet (mapa) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar__brand">
+      <span class="topbar__logo">📦</span>
+      <span class="topbar__title">TrackShop</span>
+    </div>
+    <nav class="topbar__nav">
+      <a href="#" class="topbar__link">Inicio</a>
+      <a href="#" class="topbar__link">Categorías</a>
+      <a href="#pedidos" class="topbar__link topbar__link--active">Mis pedidos</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="pedidos" class="orders-section">
+      <div class="orders-section__header">
+        <h1>Mis pedidos</h1>
+        <p class="orders-section__subtitle">Sigue tus compras en camino a Cadereyta Jiménez, N.L.</p>
+      </div>
+
+      <div class="search-bar">
+        <span class="search-bar__icon">🔍</span>
+        <input
+          type="text"
+          id="search-input"
+          class="search-bar__input"
+          placeholder="Buscar por producto, entidad o número de pedido..."
+          autocomplete="off"
+        />
+      </div>
+
+      <div id="orders-list" class="orders-list">
+        <!-- Las tarjetas de pedidos se insertan aquí vía JS -->
+      </div>
+
+      <p id="no-results" class="no-results" hidden>No se encontraron pedidos que coincidan con tu búsqueda.</p>
+    </section>
+
+    <!-- Panel de detalle del pedido -->
+    <div id="detail-overlay" class="detail-overlay" hidden>
+      <div class="detail-panel">
+        <button id="detail-close" class="detail-panel__close" aria-label="Cerrar">✕</button>
+
+        <div class="detail-panel__header">
+          <h2 id="detail-producto">Producto</h2>
+          <span id="detail-id" class="detail-panel__id">PWA2-0000</span>
+        </div>
+
+        <div class="detail-panel__info">
+          <div class="detail-info-item">
+            <span class="detail-info-item__label">Entidad emisora</span>
+            <span id="detail-entidad" class="detail-info-item__value">—</span>
+          </div>
+          <div class="detail-info-item">
+            <span class="detail-info-item__label">Estado</span>
+            <span id="detail-estado" class="detail-info-item__value detail-info-item__value--status">—</span>
+          </div>
+          <div class="detail-info-item">
+            <span class="detail-info-item__label">Origen</span>
+            <span id="detail-origen" class="detail-info-item__value">—</span>
+          </div>
+          <div class="detail-info-item">
+            <span class="detail-info-item__label">Destino</span>
+            <span id="detail-destino" class="detail-info-item__value">—</span>
+          </div>
+          <div class="detail-info-item">
+            <span class="detail-info-item__label">Entrega estimada</span>
+            <span id="detail-fecha" class="detail-info-item__value">—</span>
+          </div>
+        </div>
+
+        <div class="progress-track">
+          <div id="progress-fill" class="progress-track__fill"></div>
+        </div>
+        <span id="progress-label" class="progress-label">0% del trayecto</span>
+
+        <div id="map" class="detail-map"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <script src="js/app.js"></script>
+  <script src="js/register-sw.js"></script>
+</body>
+</html>
