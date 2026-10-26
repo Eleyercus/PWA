@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GrinDog — El grinder para perros</title>
+  <meta name="theme-color" content="#0a0a0a" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/icon-192x192.png" />
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500&family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="top">
+    <img class="top__logo" src="icons/logo.png" alt="GrinDog — el grinder para perros" />
+    <p class="top__stat"><span id="seen-count">0</span> vistos · <span id="like-count">0</span> matches</p>
+  </header>
+
+  <main>
+    <section class="deck" aria-label="Perro actual">
+      <p class="tagline">Desliza. Sonríe. <em>Deja que te huelan.</em></p>
+
+      <div class="filter">
+        <label for="breed-select">Raza</label>
+        <select id="breed-select"><option value="">Cualquiera</option></select>
+      </div>
+
+      <article class="card" id="card" aria-live="polite">
+        <div class="card__photo">
+          <img id="dog-img" alt="" />
+          <div class="card__loader" id="loader">Buscando a alguien interesante…</div>
+          <div class="card__error" id="error" hidden>
+            <p>No se pudo cargar el perro.</p>
+            <button class="btn btn--ghost" id="retry-btn" type="button">Reintentar</button>
+          </div>
+          <span class="stamp" id="stamp" aria-hidden="true">MATCH</span>
+        </div>
+        <div class="card__info">
+          <h2 id="dog-name">—</h2>
+          <p id="dog-meta" class="meta"></p>
+          <p id="dog-trait" class="trait"></p>
+        </div>
+      </article>
+
+      <div class="actions">
+        <button class="btn btn--next" id="next-btn" type="button">✕ Siguiente</button>
+        <button class="btn btn--like" id="like-btn" type="button">♥ Match</button>
+      </div>
+
+      <div class="progress" aria-live="polite">
+        <div class="progress__bar"><span id="progress-fill"></span></div>
+        <p id="progress-text">Haz 10 matches y alguien podría devolverte el guiño</p>
+      </div>
+      <p class="hint">Atajos: ← siguiente · → match</p>
+    </section>
+
+    <section class="liked" aria-labelledby="liked-title">
+      <div class="liked__head">
+        <h2 id="liked-title">Tus gustados <span id="liked-badge" class="badge">0</span></h2>
+        <button class="btn btn--ghost" id="clear-btn" type="button" hidden>Vaciar</button>
+      </div>
+      <p id="liked-empty" class="empty">Aún no has hecho match con nadie. Atrévete, no muerden... mucho.</p>
+      <ul id="liked-list" class="liked__grid"></ul>
+    </section>
+  </main>
+
+  <footer class="foot">Fotos: <a href="https://dog.ceo/dog-api/" target="_blank" rel="noopener">Dog CEO API</a> · Práctica PWA6</footer>
+
+  <!-- Chat de match mutuo -->
+  <aside class="chat" id="chat" hidden aria-label="Chat con tu match">
+    <header class="chat__head" id="chat-head">
+      <img id="chat-avatar" alt="" />
+      <div><strong id="chat-name">—</strong><small>● en línea</small></div>
+      <button type="button" id="chat-min" class="chat__btn" aria-label="Minimizar">–</button>
+      <button type="button" id="chat-close" class="chat__btn" aria-label="Cerrar">✕</button>
+    </header>
+    <div class="chat__body" id="chat-body"></div>
+    <form class="chat__form" id="chat-form" autocomplete="off">
+      <input id="chat-input" type="text" placeholder="Escribe algo seductor…" maxlength="200" />
+      <button type="submit" class="chat__send" aria-label="Enviar">➤</button>
+    </form>
+  </aside>
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="js/app.js"></script>
+  <script src="js/register-sw.js"></script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+:root{--bg:#0a0a0a;--panel:#151412;--panel2:#1d1b17;--gold:#d4af37;--gold-l:#ecd48a;--cream:#f1e3b5;--ink:#f5efe0;--mute:#9a8f73;--line:#3a3220;--wine:#7a1f2b}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;font-family:"Space Grotesk",system-ui,sans-serif;background:radial-gradient(ellipse at top,#1a1608 0,#0a0a0a 55%) fixed;color:var(--ink);min-height:100vh}
+.top{display:flex;justify-content:space-between;align-items:center;padding:10px 20px;background:#000;border-bottom:1px solid var(--gold)}
+.top__logo{height:64px;width:auto;display:block}
+.top__stat{margin:0;font:500 .8rem "IBM Plex Mono",monospace;color:var(--gold-l)}
+main{max-width:520px;margin:0 auto;padding:18px 16px 60px}
+.tagline{text-align:center;font:italic 600 1.35rem "Cormorant Garamond",serif;color:var(--gold-l);margin:4px 0 14px}
+.tagline em{color:var(--cream)}
+.filter{display:flex;gap:10px;align-items:center;margin-bottom:12px;font-size:.85rem;color:var(--mute)}
+.filter select{flex:1;padding:8px;border:1px solid var(--line);border-radius:8px;font:inherit;background:var(--panel);color:var(--ink);text-transform:capitalize}
+.card{background:var(--panel);border:1px solid var(--gold);border-radius:18px;overflow:hidden;box-shadow:0 0 28px rgba(212,175,55,.18),0 10px 30px rgba(0,0,0,.6);transition:transform .25s,opacity .25s}
+.card.go-left{transform:translateX(-60px) rotate(-6deg);opacity:0}
+.card.go-right{transform:translateX(60px) rotate(6deg);opacity:0}
+.card__photo{position:relative;aspect-ratio:1/1;background:#111;display:flex;align-items:center;justify-content:center}
+.card__photo::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,.75),transparent 40%);pointer-events:none}
+.card__photo img{width:100%;height:100%;object-fit:cover;display:block}
+.card__loader,.card__error{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;background:#111;color:var(--mute);font-style:italic}
+.stamp{position:absolute;z-index:3;top:18px;left:18px;border:4px solid var(--gold);color:var(--gold);padding:2px 12px;font-weight:700;font-size:1.6rem;border-radius:8px;transform:rotate(-12deg);opacity:0;transition:opacity .2s;background:rgba(0,0,0,.65)}
+.stamp.show{opacity:1}
+.card__info{padding:14px 18px 18px}
+.card__info h2{margin:0;font:600 1.9rem "Cormorant Garamond",serif;color:var(--gold-l)}
+.meta{margin:2px 0 8px;font:400 .78rem "IBM Plex Mono",monospace;color:var(--mute);text-transform:capitalize}
+.trait{margin:0;font-size:.95rem;font-style:italic;color:var(--cream)}
+.actions{display:flex;gap:12px;margin-top:16px}
+.btn{font:700 1rem "Space Grotesk",sans-serif;border:0;border-radius:999px;padding:14px 18px;cursor:pointer;transition:transform .1s,opacity .2s,box-shadow .2s}
+.btn:active{transform:scale(.96)}.btn:disabled{opacity:.5;cursor:wait}
+.btn--next{flex:1;background:transparent;color:var(--ink);border:2px solid var(--line)}
+.btn--next:hover{border-color:var(--mute)}
+.btn--like{flex:1;background:linear-gradient(135deg,var(--gold-l),var(--gold));color:#1a1405}
+.btn--like:hover{box-shadow:0 0 18px rgba(212,175,55,.55)}
+.btn--ghost{background:transparent;border:1px solid var(--line);color:var(--mute);padding:6px 12px;font-size:.8rem}
+.progress{margin-top:16px}
+.progress__bar{height:6px;border-radius:99px;background:var(--panel2);overflow:hidden}
+.progress__bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--wine),var(--gold));transition:width .4s}
+.progress p{margin:6px 0 0;text-align:center;font:italic 1rem "Cormorant Garamond",serif;color:var(--mute)}
+.hint{text-align:center;font:400 .72rem "IBM Plex Mono",monospace;color:var(--mute);margin:8px 0 0}
+.liked{margin-top:34px;border-top:1px dashed var(--line);padding-top:20px}
+.liked__head{display:flex;justify-content:space-between;align-items:center}
+.liked__head h2{margin:0;font:600 1.5rem "Cormorant Garamond",serif;color:var(--gold-l)}
+.badge{background:var(--gold);color:#1a1405;border-radius:999px;padding:1px 9px;font:700 .8rem "Space Grotesk",sans-serif;vertical-align:middle}
+.empty{color:var(--mute);font-size:.9rem;font-style:italic}
+.liked__grid{list-style:none;margin:14px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+.liked__item{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.liked__item.mutual{border-color:var(--gold);box-shadow:0 0 14px rgba(212,175,55,.35)}
+.liked__item img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block}
+.liked__item div{padding:8px 10px;font-size:.85rem}
+.liked__item strong{display:block;color:var(--cream)}
+.liked__item small{color:var(--mute);text-transform:capitalize;font:400 .7rem "IBM Plex Mono",monospace}
+.liked__remove{position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:50%;border:0;background:rgba(0,0,0,.7);color:#fff;cursor:pointer;font-size:.9rem;line-height:1}
+.liked__chat{display:block;width:calc(100% - 20px);margin:0 10px 10px;padding:6px;border:1px solid var(--gold);border-radius:999px;background:transparent;color:var(--gold-l);font:600 .75rem "Space Grotesk",sans-serif;cursor:pointer}
+.liked__chat:hover{background:var(--gold);color:#1a1405}
+.mutual-tag{position:absolute;top:6px;left:6px;background:var(--gold);color:#1a1405;border-radius:99px;padding:2px 8px;font:700 .65rem "Space Grotesk",sans-serif}
+.foot{text-align:center;padding:20px;font-size:.75rem;color:var(--mute)}
+.foot a{color:var(--gold)}
+
+/* Chat */
+.chat{position:fixed;right:14px;bottom:14px;width:min(340px,calc(100vw - 28px));background:var(--panel);border:1px solid var(--gold);border-radius:14px;box-shadow:0 0 30px rgba(212,175,55,.3),0 12px 32px rgba(0,0,0,.7);display:flex;flex-direction:column;overflow:hidden;z-index:50;animation:pop .35s ease}
+@keyframes pop{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
+.chat__head{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#000;border-bottom:1px solid var(--gold);cursor:pointer}
+.chat__head img{width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid var(--gold)}
+.chat__head div{flex:1;line-height:1.2}
+.chat__head strong{display:block;color:var(--gold-l)}
+.chat__head small{color:#6fcf7f;font-size:.7rem}
+.chat__btn{background:none;border:0;color:var(--mute);font-size:1rem;cursor:pointer;padding:4px 6px}
+.chat__body{height:240px;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
+.chat.min .chat__body,.chat.min .chat__form{display:none}
+.msg{max-width:82%;padding:8px 12px;border-radius:14px;font-size:.88rem;line-height:1.35}
+.msg--dog{align-self:flex-start;background:var(--panel2);border:1px solid var(--line);color:var(--cream);border-bottom-left-radius:4px}
+.msg--me{align-self:flex-end;background:linear-gradient(135deg,var(--gold-l),var(--gold));color:#1a1405;border-bottom-right-radius:4px}
+.msg--typing{font-style:italic;color:var(--mute)}
+.chat__form{display:flex;gap:6px;padding:8px;border-top:1px solid var(--line)}
+.chat__form input{flex:1;padding:9px 12px;border-radius:999px;border:1px solid var(--line);background:#0e0d0b;color:var(--ink);font:inherit;font-size:.88rem}
+.chat__send{width:38px;border:0;border-radius:50%;background:var(--gold);color:#1a1405;cursor:pointer}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#000;color:var(--gold-l);border:1px solid var(--gold);padding:10px 18px;border-radius:999px;font-size:.9rem;z-index:60;box-shadow:0 0 20px rgba(212,175,55,.4)}
+@media(max-width:560px){.toast{bottom:auto;top:84px}}
