@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VozCalc — Asistente virtual de cálculo</title>
+  <meta name="theme-color" content="#6d28d9" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/icon-192x192.png" />
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <main>
+    <header class="head">
+      <h1>Voz<span>Calc</span></h1>
+      <button id="mute-btn" class="icon-btn" type="button" aria-pressed="false" title="Activar o silenciar la voz del asistente">🔊</button>
+    </header>
+
+    <p id="notice" class="notice" hidden></p>
+
+    <section class="assistant" aria-label="Asistente">
+      <button id="mic-btn" class="mic" type="button" aria-pressed="false" aria-label="Activar micrófono">
+        <svg viewBox="0 0 24 24" width="34" height="34" aria-hidden="true"><path fill="currentColor" d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V22h2v-3.08A7 7 0 0 0 19 12h-2Z"/></svg>
+      </button>
+      <p id="mic-status" class="mic-status">Toca el micrófono y di: “dos más tres”</p>
+      <p class="heard">Escuché: <strong id="heard">—</strong></p>
+      <p id="reply" class="reply" role="status">Hola, soy VozCalc. Dime una operación.</p>
+    </section>
+
+    <section class="calc" aria-label="Calculadora">
+      <div class="display">
+        <p id="expr" class="display__expr">&nbsp;</p>
+        <p id="result" class="display__result">0</p>
+      </div>
+
+      <form id="text-form" class="text-form" autocomplete="off">
+        <input id="text-input" type="text" placeholder="O escribe: cinco por ocho" aria-label="Escribe una operación" />
+        <button type="submit" class="btn">Calcular</button>
+      </form>
+
+      <div class="keys" id="keys">
+        <button data-k="C" class="k k--fn">C</button><button data-k="⌫" class="k k--fn">⌫</button><button data-k="÷" class="k k--op">÷</button><button data-k="×" class="k k--op">×</button>
+        <button data-k="7" class="k">7</button><button data-k="8" class="k">8</button><button data-k="9" class="k">9</button><button data-k="−" class="k k--op">−</button>
+        <button data-k="4" class="k">4</button><button data-k="5" class="k">5</button><button data-k="6" class="k">6</button><button data-k="+" class="k k--op">+</button>
+        <button data-k="1" class="k">1</button><button data-k="2" class="k">2</button><button data-k="3" class="k">3</button><button data-k="=" class="k k--eq k--tall">=</button>
+        <button data-k="0" class="k k--wide">0</button><button data-k="." class="k">.</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel__head"><h2>Historial</h2><button id="clear-history" class="link-btn" type="button" hidden>Borrar</button></div>
+      <p id="history-empty" class="muted">Aún no hay operaciones.</p>
+      <ul id="history" class="history"></ul>
+    </section>
+
+    <section class="panel">
+      <h2>Comandos de voz</h2>
+      <ul class="cmds">
+        <li><code>“dos más tres”</code> · <code>“siete por ocho”</code> · <code>“diez entre cuatro”</code></li>
+        <li><code>“suma 4 y 6”</code> · <code>“resta 5 a 10”</code> · <code>“multiplica 6 por 7”</code> · <code>“divide 8 entre 2”</code></li>
+        <li><code>“cuánto es veinte menos cinco”</code> · <code>“calcula tres punto cinco por dos”</code></li>
+        <li><code>“limpia”</code> borra la pantalla · <code>“repite”</code> repite el resultado</li>
+        <li><code>“ayuda”</code> · <code>“hola”</code> · <code>“silencio”</code> apaga la voz del asistente</li>
+      </ul>
+    </section>
+  </main>
+  <footer class="foot">Reconocimiento de voz con <a href="https://www.talater.com/annyang/" target="_blank" rel="noopener">Annyang</a> · Práctica PWA 6</footer>
+
+  <script src="js/vendor/annyang.min.js"></script>
+  <script src="js/calc.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/register-sw.js"></script>
+</body>
+</html>

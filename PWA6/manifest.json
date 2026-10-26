@@ -1,0 +1,14 @@
+{
+  "name": "VozCalc - Asistente virtual de cálculo",
+  "short_name": "VozCalc",
+  "description": "Calculadora básica controlada por voz con Annyang.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#faf5ff",
+  "theme_color": "#6d28d9",
+  "icons": [
+    { "src": "icons/icon-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512x512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
