@@ -144,7 +144,7 @@ function drawBadge() {
   logoH("gob", fx, fy - fGob / 2, fGob);
   c.textAlign = "center"; c.textBaseline = "middle";
   c.fillStyle = GRAY; c.font = '500 15px "IBM Plex Mono", monospace';
-  c.fillText("PRÁCTICA ESCOLAR · NO ES UN DOCUMENTO OFICIAL", W / 2, 996);
+  c.fillText("Identificacioón Oficial", W / 2, 996);
   c.restore();
 }
 
