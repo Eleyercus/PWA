@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GafeteYa — Generador de gafetes estudiantiles</title>
+  <meta name="theme-color" content="#0b2a4a" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/icon-192x192.png" />
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="top">
+    <h1>Gafete<span>Ya</span></h1>
+    <button id="install-btn" class="btn btn--light" type="button" hidden>Instalar app</button>
+  </header>
+
+  <main class="layout">
+    <form id="form" class="form" autocomplete="off" novalidate>
+      <h2>Tus datos</h2>
+
+      <label for="f-name">Nombre completo</label>
+      <input id="f-name" type="text" maxlength="60" placeholder="Ej. Diego Alberto Martínez Ovalle" required />
+
+      <label for="f-group">Grupo</label>
+      <input id="f-group" type="text" maxlength="14" placeholder="Ej. 15IEVND4N" required />
+
+      <label for="f-career">Carrera</label>
+      <input id="f-career" type="text" maxlength="80" list="careers" placeholder="Ej. Ingeniería en Entornos Virtuales y Negocios Digitales" required />
+      <datalist id="careers">
+        <option value="Ingeniería en Entornos Virtuales y Negocios Digitales"></option>
+        <option value="Técnico Superior Universitario en Tecnologías de la Información"></option>
+      </datalist>
+
+      <label for="camara">Fotografía</label>
+      <div class="photo-btns">
+        <label class="btn btn--ghost" for="camara">Tomar foto</label>
+        <label class="btn btn--ghost" for="subir">Elegir del dispositivo</label>
+      </div>
+      <input id="camara" class="sr" type="file" accept="image/*" capture="user" />
+      <input id="subir" class="sr" type="file" accept="image/*" />
+
+      <div class="gal-head">
+        <span>Mis fotos <small>(toca una para usarla en el gafete)</small></span>
+        <button id="gal-clear" class="link-btn" type="button" hidden>Vaciar</button>
+      </div>
+      <div id="galeria" class="galeria"></div>
+
+      <fieldset id="adjust" class="adjust" hidden>
+        <legend>Ajustar foto</legend>
+        <label for="a-zoom">Zoom</label><input id="a-zoom" type="range" min="1" max="3" step="0.05" value="1" />
+        <label for="a-x">Izquierda / derecha</label><input id="a-x" type="range" min="-1" max="1" step="0.02" value="0" />
+        <label for="a-y">Arriba / abajo</label><input id="a-y" type="range" min="-1" max="1" step="0.02" value="0" />
+        <button id="photo-remove" class="link-btn" type="button">Quitar foto</button>
+      </fieldset>
+
+      <p id="msg" class="msg" role="status"></p>
+
+      <div class="actions">
+        <button id="download-btn" class="btn" type="button">Descargar PNG</button>
+        <button id="share-btn" class="btn btn--ghost" type="button" hidden>Compartir</button>
+        <button id="print-btn" class="btn btn--ghost" type="button">Imprimir</button>
+        <button id="reset-btn" class="link-btn" type="reset">Limpiar todo</button>
+      </div>
+    </form>
+
+    <section class="preview" aria-label="Vista previa del gafete">
+      <h2>Vista previa</h2>
+      <canvas id="badge" width="640" height="1016" aria-label="Gafete estudiantil generado"></canvas>
+    </section>
+  </main>
+
+  <img id="print-img" alt="Gafete para imprimir" />
+  <footer class="foot">Práctica escolar · PWA · Tus datos y tu foto se quedan en tu dispositivo.</footer>
+
+  <script src="js/app.js"></script>
+  </body>
+</html>
