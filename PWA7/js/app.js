@@ -2,7 +2,17 @@
 const $ = (id) => document.getElementById(id);
 const KEY = "gafeteya_data";
 const W = 640, H = 1016;
-const NAVY = "#0b2a4a", GOLD = "#d4a62a", GRAY = "#5d6b80";
+const NAVY = "#14532d", GREEN = "#26991b", GOLD = "#ee650b", GRAY = "#5b6b5e";   // verde oscuro (texto), verde y naranja del logo UT
+// Logos institucionales (se dibujan cuando cargan)
+const LOGO_SRC = { ut: "icons/logo-ut.png", escudo: "icons/escudo-nl.png", sep: "icons/sep.png", edu: "icons/educacion-nl.png", gob: "icons/gobierno-nl.png" };
+const logos = {};
+Object.entries(LOGO_SRC).forEach(([k, src]) => { const im = new Image(); im.onload = () => { logos[k] = im; drawBadge(); }; im.src = src; });
+function logoH(k, x, y, h) {              // dibuja un logo con altura h y devuelve su ancho
+  const im = logos[k]; if (!im) return 0;
+  const w = h * (im.naturalWidth / im.naturalHeight);
+  ctx.drawImage(im, x, y, w, h); return w;
+}
+function logoW(k, h) { const im = logos[k]; return im ? h * (im.naturalWidth / im.naturalHeight) : 0; }
 const canvas = $("badge");
 const ctx = canvas.getContext("2d");
 
@@ -54,23 +64,29 @@ function drawBadge() {
   roundRect(c, 0, 0, W, H, 40); c.clip();
   c.fillStyle = "#ffffff"; c.fillRect(0, 0, W, H);
 
-  // Banda superior
-  c.fillStyle = NAVY; c.fillRect(0, 0, W, 200);
-  c.fillStyle = GOLD; c.fillRect(0, 200, W, 10);
+  // Encabezado blanco: logo UT | escudo de Nuevo León
+  const hutW = logoW("ut", 150), hescW = logoW("escudo", 140);
+  const rowW = hutW + 80 + hescW, x0 = (W - rowW) / 2;
+  logoH("ut", x0, 20, 150);
+  c.fillStyle = "#d7e5d4"; c.fillRect(x0 + hutW + 40, 24, 2, 140);
+  logoH("escudo", x0 + hutW + 80, 22, 140);
+  if (!logos.ut) {                         // respaldo mientras carga el logo
+    c.textAlign = "center"; c.textBaseline = "middle"; c.fillStyle = NAVY;
+    c.font = '700 30px "Space Grotesk", Arial, sans-serif'; c.fillText("UT CADEREYTA", W / 2, 95);
+  }
+  // Franja verde con remate naranja
+  c.fillStyle = GREEN; c.fillRect(0, 186, W, 12);
+  c.fillStyle = GOLD; c.beginPath(); c.moveTo(470, 186); c.lineTo(W, 186); c.lineTo(W, 198); c.lineTo(458, 198); c.closePath(); c.fill();
+
   c.textAlign = "center"; c.textBaseline = "middle";
-  c.fillStyle = "#ffffff";
-  c.font = '700 34px "Space Grotesk", Arial, sans-serif';
-  c.fillText("UNIVERSIDAD TECNOLÓGICA", W / 2, 70);
-  c.fillText("DE CADEREYTA", W / 2, 114);
-  c.fillStyle = GOLD;
-  c.font = '500 22px "IBM Plex Mono", monospace';
-  c.fillText("GAFETE ESTUDIANTIL", W / 2, 164);
+  c.fillStyle = GRAY; c.font = '500 18px "IBM Plex Mono", monospace';
+  c.fillText("GAFETE ESTUDIANTIL", W / 2, 224);
 
   // Foto
-  const px = 190, py = 232, pw = 260, ph = 340;
+  const pw = 240, ph = 320, px = (W - pw) / 2, py = 246;
   c.save();
-  roundRect(c, px, py, pw, ph, 22); c.clip();
-  c.fillStyle = "#e6ebf3"; c.fillRect(px, py, pw, ph);
+  roundRect(c, px, py, pw, ph, 20); c.clip();
+  c.fillStyle = "#e8efe6"; c.fillRect(px, py, pw, ph);
   if (photoImg) {
     const iw = photoImg.naturalWidth || photoImg.width, ih = photoImg.naturalHeight || photoImg.height;
     const zoom = parseFloat($("a-zoom").value) || 1;
@@ -80,48 +96,55 @@ function drawBadge() {
     const oy = (dh - ph) / 2 * (parseFloat($("a-y").value) || 0);
     c.drawImage(photoImg, px - (dw - pw) / 2 - ox, py - (dh - ph) / 2 - oy, dw, dh);
   } else {
-    c.fillStyle = "#b7c2d4";
-    c.beginPath(); c.arc(px + pw / 2, py + 130, 52, 0, Math.PI * 2); c.fill();
-    c.beginPath(); c.arc(px + pw / 2, py + 330, 100, Math.PI, 0); c.fill();
+    c.fillStyle = "#b9c9b5";
+    c.beginPath(); c.arc(px + pw / 2, py + 120, 48, 0, Math.PI * 2); c.fill();
+    c.beginPath(); c.arc(px + pw / 2, py + 310, 92, Math.PI, 0); c.fill();
     c.fillStyle = GRAY; c.font = '500 20px "IBM Plex Mono", monospace';
-    c.fillText("FOTO", px + pw / 2, py + 40);
+    c.fillText("FOTO", px + pw / 2, py + 36);
   }
   c.restore();
-  c.lineWidth = 8; c.strokeStyle = GOLD;
-  roundRect(c, px, py, pw, ph, 22); c.stroke();
+  c.lineWidth = 8; c.strokeStyle = GREEN;
+  roundRect(c, px, py, pw, ph, 20); c.stroke();
 
   // Nombre
   const maxW = 560;
   c.textAlign = "center"; c.textBaseline = "alphabetic";
   const name = (d.name || "NOMBRE Y APELLIDOS").toUpperCase();
   const nm = fitText(c, name, maxW, 2, [44, 38, 32, 28], "700");
-  c.fillStyle = d.name ? NAVY : "#9aa6b8";
-  nm.lines.forEach((l, i) => c.fillText(l, W / 2, 628 + i * (nm.size + 8)));
-  const afterName = 628 + (nm.lines.length - 1) * (nm.size + 8);
+  c.fillStyle = d.name ? NAVY : "#9db39a";
+  nm.lines.forEach((l, i) => c.fillText(l, W / 2, 618 + i * (nm.size + 8)));
+  const afterName = 618 + (nm.lines.length - 1) * (nm.size + 8);
 
-  c.fillStyle = GOLD; c.fillRect(W / 2 - 50, afterName + 22, 100, 6);
+  c.fillStyle = GOLD; c.fillRect(W / 2 - 50, afterName + 20, 100, 6);
 
   // Grupo
-  const gy = afterName + 62;
+  const gy = afterName + 58;
   c.fillStyle = GRAY; c.font = '500 20px "IBM Plex Mono", monospace';
   c.fillText("GRUPO", W / 2, gy);
-  c.fillStyle = d.group ? NAVY : "#9aa6b8";
+  c.fillStyle = d.group ? GREEN : "#9db39a";
   c.font = '700 40px "Space Grotesk", Arial, sans-serif';
-  c.fillText((d.group || "GRUPO").toUpperCase(), W / 2, gy + 42);
+  c.fillText((d.group || "GRUPO").toUpperCase(), W / 2, gy + 40);
 
   // Carrera
-  const cy = gy + 84;
+  const cy = gy + 80;
   c.fillStyle = GRAY; c.font = '500 20px "IBM Plex Mono", monospace';
   c.fillText("CARRERA", W / 2, cy);
   const cr = fitText(c, d.career || "Nombre de la carrera", maxW, 3, [28, 25, 22, 20], "500");
-  c.fillStyle = d.career ? NAVY : "#9aa6b8";
-  cr.lines.forEach((l, i) => c.fillText(l, W / 2, cy + 36 + i * (cr.size + 6)));
+  c.fillStyle = d.career ? NAVY : "#9db39a";
+  cr.lines.forEach((l, i) => c.fillText(l, W / 2, cy + 34 + i * (cr.size + 6)));
 
-  // Banda inferior
-  c.fillStyle = NAVY; c.fillRect(0, H - 56, W, 56);
-  c.fillStyle = "#ffffff"; c.textBaseline = "middle";
-  c.font = '700 22px "Space Grotesk", Arial, sans-serif';
-  c.fillText("ESTUDIANTE  ·  PRÁCTICA ESCOLAR", W / 2, H - 28);
+  // Pie blanco con logos institucionales
+  c.fillStyle = GREEN; c.fillRect(0, 916, W, 6);
+  c.fillStyle = GOLD; c.fillRect(W - 170, 916, 170, 6);
+  const fSep = 42, fEdu = 40, fGob = 48, gap = 34, fy = 952;           // fy = línea central de los logos
+  const total = logoW("sep", fSep) + gap + logoW("edu", fEdu) + gap + logoW("gob", fGob);
+  let fx = (W - total) / 2;
+  fx += logoH("sep", fx, fy - fSep / 2, fSep) + gap;
+  fx += logoH("edu", fx, fy - fEdu / 2, fEdu) + gap;
+  logoH("gob", fx, fy - fGob / 2, fGob);
+  c.textAlign = "center"; c.textBaseline = "middle";
+  c.fillStyle = GRAY; c.font = '500 15px "IBM Plex Mono", monospace';
+  c.fillText("PRÁCTICA ESCOLAR · NO ES UN DOCUMENTO OFICIAL", W / 2, 996);
   c.restore();
 }
 
