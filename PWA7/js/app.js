@@ -240,10 +240,19 @@ $("download-btn").addEventListener("click", async () => {
   setTimeout(() => URL.revokeObjectURL(a.href), 2000);
   setMsg("Gafete descargado.", true);
 });
-$("print-btn").addEventListener("click", () => {
+$("print-btn").addEventListener("click", async () => {
   if (!validate()) return;
   drawBadge();
-  $("print-img").src = canvas.toDataURL("image/png");
+  // Se imprime sobre fondo blanco (las esquinas transparentes del PNG salen negras en algunos visores de impresión)
+  const hoja = document.createElement("canvas");
+  hoja.width = W; hoja.height = H;
+  const hc = hoja.getContext("2d");
+  hc.fillStyle = "#ffffff"; hc.fillRect(0, 0, W, H);
+  hc.drawImage(canvas, 0, 0);
+  const img = $("print-img");
+  img.src = hoja.toDataURL("image/png");
+  // Esperar a que la imagen cargue ANTES de abrir el diálogo; si no, la vista previa sale en blanco
+  try { await img.decode(); } catch { await new Promise((r) => setTimeout(r, 400)); }
   window.print();
 });
 if (navigator.canShare && navigator.share) {

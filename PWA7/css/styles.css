@@ -39,7 +39,9 @@ h2{margin:0 0 12px;font-size:1.1rem}
 #print-img{display:none}
 .foot{text-align:center;padding:16px;font-size:.78rem;color:var(--mute)}
 @media print{
-  @page{size:54mm 86mm;margin:0}
+  @page{size:auto;margin:12mm}
+  html,body{background:#fff!important}
   body>*:not(#print-img){display:none!important}
-  #print-img{display:block;width:54mm;height:86mm}
+  /* Tamaño real de credencial (54 × 86 mm) con borde punteado para recortar */
+  #print-img{display:block;width:54mm;height:auto;outline:0.2mm dashed #888;outline-offset:1mm;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
