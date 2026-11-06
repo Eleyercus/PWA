@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a7d3b">
+<meta name="description" content="Pase de lista antifraude: solo cuenta si estás dentro del salón.">
+<title>AsistenciaSegura · UT Cadereyta</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="icons/icon-192x192.png">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header class="top">
+  <img src="icons/logo-ut.png" alt="UT Cadereyta" class="logo">
+  <div><b>AsistenciaSegura</b><small id="net">…</small></div>
+  <button id="btn-home" class="ghost" hidden>Inicio</button>
+</header>
+
+<main>
+  <!-- INICIO -->
+  <section data-view="home">
+    <h1>Pase de lista antifraude</h1>
+    <p class="muted">Solo se registra a quien está físicamente en el salón: código QR que cambia cada 15 s, ubicación GPS, selfie en vivo y validación en el dispositivo del docente.</p>
+    <button class="big" id="go-doc">Soy docente</button>
+    <button class="big alt" id="go-alu">Soy alumno</button>
+    <div id="resume" class="note" hidden>
+      Hay una clase sin cerrar: <b id="resume-name"></b>
+      <div class="row"><button id="resume-go">Continuar clase</button><button class="ghost" id="resume-drop">Descartar</button></div>
+    </div>
+    <button class="link" id="go-hist">Historial de clases</button>
+  </section>
+
+  <!-- DOCENTE: configuración -->
+  <section data-view="doc-setup" hidden>
+    <h2>Nueva clase</h2>
+    <label>Materia<input id="f-materia" maxlength="60" placeholder="Programación de Aplicaciones Web Progresivas"></label>
+    <label>Grupo<input id="f-grupo" maxlength="20" placeholder="15IEVND4N"></label>
+    <label>Docente<input id="f-docente" maxlength="60" placeholder="Ing. Omar Alejandro Mata Garza"></label>
+    <label>Radio permitido: <b id="radio-v">50</b> m
+      <input id="f-radio" type="range" min="20" max="200" step="10" value="50"></label>
+    <label class="check"><input id="f-selfie" type="checkbox" checked> Pedir selfie en vivo (recomendado)</label>
+    <label>Lista del grupo (opcional) <small class="muted">una por línea: matrícula, nombre</small>
+      <textarea id="f-roster" rows="4" placeholder="22001234, Ana López&#10;22001235, Luis Pérez"></textarea></label>
+    <div class="note">Al iniciar, el navegador pedirá tu ubicación: <b>tu posición es el centro del salón</b>. Inicia la clase estando dentro del aula.</div>
+    <button class="big" id="start">Iniciar pase de lista</button>
+    <p id="start-msg" class="msg" role="status"></p>
+  </section>
+
+  <!-- DOCENTE: clase en vivo -->
+  <section data-view="doc-live" hidden>
+    <div class="live-head"><b id="l-title"></b><small id="l-sub" class="muted"></small></div>
+    <div class="qrbox">
+      <canvas id="qr" width="260" height="260" aria-label="Código QR vigente"></canvas>
+      <div class="bar"><i id="bar"></i></div>
+      <div class="code" id="code">----</div>
+      <small class="muted">Proyecta esta pantalla. El QR cambia cada 15 s: una captura no sirve.</small>
+    </div>
+    <div class="stats">
+      <div><b id="s-ok">0</b><small>Presentes</small></div>
+      <div><b id="s-dud">0</b><small>Por revisar</small></div>
+      <div><b id="s-rej">0</b><small>Rechazadas</small></div>
+    </div>
+    <ul id="list" class="list"></ul>
+    <div class="row">
+      <button id="finish">Terminar y exportar</button>
+    </div>
+  </section>
+
+  <!-- ALUMNO -->
+  <section data-view="alu" hidden>
+    <h2>Registrar asistencia</h2>
+    <div id="a-profile">
+      <label>Nombre completo<input id="a-nombre" maxlength="60" autocomplete="name"></label>
+      <label>Matrícula<input id="a-mat" maxlength="20" autocapitalize="characters"></label>
+      <button class="big" id="a-scan">Escanear QR del salón</button>
+      <details><summary>¿No puedes escanear? Escribe el código</summary>
+        <label>Código de la pantalla<input id="a-code" placeholder="XXXX-XXXX-XXXXXX" autocapitalize="characters"></label>
+        <button id="a-manual">Usar código</button></details>
+    </div>
+    <div id="a-cam" hidden>
+      <video id="a-video" playsinline muted></video>
+      <button class="ghost" id="a-cancel-scan">Cancelar</button>
+    </div>
+    <div id="a-flow" hidden>
+      <ol class="steps" id="a-steps">
+        <li data-s="conn">Conectando con el docente</li>
+        <li data-s="gps">Verificando tu ubicación</li>
+        <li data-s="selfie">Selfie en vivo</li>
+        <li data-s="send">Enviando</li>
+      </ol>
+      <div id="a-selfie" hidden>
+        <video id="a-selfie-video" playsinline muted></video>
+        <button class="big" id="a-snap">Tomar selfie y enviar</button>
+      </div>
+    </div>
+    <div id="a-result" class="result" hidden><b id="r-title"></b><p id="r-text"></p><button id="r-again" class="ghost">Volver</button></div>
+    <p id="a-msg" class="msg" role="status"></p>
+    <h3>Mis registros</h3>
+    <ul id="a-hist" class="list small"></ul>
+  </section>
+
+  <!-- HISTORIAL -->
+  <section data-view="hist" hidden>
+    <h2>Historial de clases</h2>
+    <ul id="h-list" class="list"></ul>
+    <p class="muted" id="h-empty">Aún no hay clases cerradas en este dispositivo.</p>
+  </section>
+</main>
+
+<div id="viewer" hidden><img alt="Selfie"><button class="ghost">Cerrar</button></div>
+
+<script src="js/vendor/peerjs.min.js"></script>
+<script src="js/vendor/jsQR.js"></script>
+<script src="js/vendor/qrcode.js"></script>
+<script src="js/config.js"></script>
+<script src="js/core.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
