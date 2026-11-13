@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a7d3b">
+<meta name="description" content="Genera y lee códigos QR de texto, enlaces, imágenes, Wi-Fi, contactos y más.">
+<title>QRFlex · Generador y lector QR</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="icons/icon-192x192.png">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header class="top">
+  <img src="icons/logo-ut.png" alt="UT Cadereyta" class="logo">
+  <div><b>QRFlex</b><small>Generador y lector de códigos QR</small></div>
+</header>
+<nav class="tabs" role="tablist">
+  <button role="tab" data-tab="gen" aria-selected="true">Generar</button>
+  <button role="tab" data-tab="leer" aria-selected="false">Leer</button>
+  <button role="tab" data-tab="hist" aria-selected="false">Historial</button>
+</nav>
+
+<main>
+<!-- GENERAR -->
+<section data-panel="gen">
+  <label>¿Qué quieres guardar en el QR?
+    <select id="g-tipo">
+      <option value="texto">Texto / frase</option>
+      <option value="url">Enlace (URL)</option>
+      <option value="imagen">Imagen</option>
+      <option value="wifi">Red Wi-Fi</option>
+      <option value="contacto">Contacto</option>
+      <option value="correo">Correo</option>
+      <option value="tel">Teléfono</option>
+      <option value="geo">Ubicación</option>
+    </select></label>
+
+  <div data-f="texto"><label>Texto<textarea id="f-texto" rows="4" placeholder="Escribe una frase, un mensaje, lo que quieras…"></textarea></label></div>
+  <div data-f="url" hidden><label>Enlace<input id="f-url" inputmode="url" placeholder="utcadereyta.edu.mx"></label></div>
+  <div data-f="imagen" hidden>
+    <label>Imagen<input id="f-img" type="file" accept="image/*"></label>
+    <label>Calidad
+      <select id="f-imgq"><option value="700">Fácil de escanear (muy pequeña)</option><option value="1400" selected>Equilibrada</option><option value="2300">Más detalle (QR muy denso)</option></select></label>
+    <p class="note">Un QR guarda pocos datos (≈3 KB como máximo), así que la imagen se reduce y comprime automáticamente. Funciona bien con logos, íconos e ilustraciones simples; una foto grande perderá mucho detalle.</p>
+    <div id="img-info" class="muted"></div>
+  </div>
+  <div data-f="wifi" hidden>
+    <label>Nombre de la red (SSID)<input id="f-ssid" maxlength="32"></label>
+    <label>Contraseña<input id="f-wpass" maxlength="63"></label>
+    <label>Seguridad<select id="f-seg"><option>WPA</option><option>WEP</option><option value="nopass">Sin contraseña</option></select></label>
+  </div>
+  <div data-f="contacto" hidden>
+    <label>Nombre<input id="f-cn" maxlength="60"></label>
+    <label>Teléfono<input id="f-ct" inputmode="tel" maxlength="25"></label>
+    <label>Correo<input id="f-ce" inputmode="email" maxlength="60"></label>
+    <label>Empresa / escuela<input id="f-co" maxlength="60"></label>
+  </div>
+  <div data-f="correo" hidden>
+    <label>Correo<input id="f-me" inputmode="email"></label>
+    <label>Asunto (opcional)<input id="f-ma"></label>
+  </div>
+  <div data-f="tel" hidden><label>Teléfono<input id="f-tel" inputmode="tel"></label></div>
+  <div data-f="geo" hidden>
+    <label>Latitud<input id="f-lat" inputmode="decimal" placeholder="25.5833"></label>
+    <label>Longitud<input id="f-lng" inputmode="decimal" placeholder="-99.9833"></label>
+    <button class="ghost" id="f-here" type="button">Usar mi ubicación actual</button>
+  </div>
+
+  <details class="opts"><summary>Opciones del QR</summary>
+    <div class="row2">
+      <label>Color<input id="o-fg" type="color" value="#075d2c"></label>
+      <label>Fondo<input id="o-bg" type="color" value="#ffffff"></label>
+    </div>
+    <label>Corrección de errores
+      <select id="o-ecc"><option value="L">Baja (más datos)</option><option value="M" selected>Media</option><option value="Q">Alta</option><option value="H">Máxima (más resistente)</option></select></label>
+  </details>
+
+  <p id="g-msg" class="msg" role="status"></p>
+  <div id="g-out" class="qrbox" hidden>
+    <canvas id="g-canvas" aria-label="Código QR generado"></canvas>
+    <div id="g-meta" class="muted"></div>
+    <div class="row">
+      <button id="g-dl">Descargar PNG</button>
+      <button id="g-share" class="ghost" hidden>Compartir</button>
+      <button id="g-copy" class="ghost">Copiar contenido</button>
+    </div>
+  </div>
+</section>
+
+<!-- LEER -->
+<section data-panel="leer" hidden>
+  <div id="r-start">
+    <button class="big" id="r-cam">Escanear con la cámara</button>
+    <label class="drop" id="r-drop">Subir foto o captura de un QR
+      <input id="r-file" type="file" accept="image/*"><small class="muted">También puedes arrastrar la imagen aquí</small></label>
+  </div>
+  <div id="r-live" hidden>
+    <video id="r-video" playsinline muted></video>
+    <button class="ghost" id="r-stop">Detener cámara</button>
+  </div>
+  <p id="r-msg" class="msg" role="status"></p>
+  <div id="r-res" class="result" hidden>
+    <small class="muted" id="r-kind"></small>
+    <div id="r-body"></div>
+    <div class="row wrap" id="r-acts"></div>
+  </div>
+</section>
+
+<!-- HISTORIAL -->
+<section data-panel="hist" hidden>
+  <ul id="h-list" class="list"></ul>
+  <p id="h-empty" class="muted">Aún no hay movimientos.</p>
+  <button class="ghost" id="h-clear">Borrar historial</button>
+</section>
+</main>
+
+<script src="js/vendor/jsQR.js"></script>
+<script src="js/vendor/qrcode.js"></script>
+<script src="js/core.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

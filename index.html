@@ -266,7 +266,7 @@
     </header>
 
     <main>
-      <p class="section-label mono">Proyectos — 3 de 3 disponibles</p>
+      <p class="section-label mono" id="project-count">Proyectos</p>
 
       <div class="project-grid" id="project-grid">
         <!-- Las tarjetas se generan desde PROJECTS más abajo -->
@@ -362,6 +362,14 @@
       statusLabel: "Funcional",
       href: "./PWA8/index.html",
     },
+    {
+      code: "PWA-09",
+      title: "QRFlex — Generador y lector de QR",
+      description: "Crea y lee códigos QR de frases, enlaces, imágenes, Wi-Fi y contactos, con cámara o desde una foto.",
+      status: "funcional",
+      statusLabel: "Funcional",
+      href: "./PWA9/index.html",
+    },
     ];
 
     const grid = document.getElementById("project-grid");
@@ -381,6 +389,8 @@
       `;
       grid.appendChild(card);
     });
+
+    document.getElementById("project-count").textContent = `Proyectos — ${PROJECTS.length} de ${PROJECTS.length} disponibles`;
 
     // Slot vacío que invita a la siguiente entrega, sin inventar contenido
     const slot = document.createElement("div");

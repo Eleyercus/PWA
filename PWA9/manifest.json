@@ -1,0 +1,16 @@
+{
+  "name": "QRFlex · Generador y lector QR",
+  "short_name": "QRFlex",
+  "description": "Genera y lee códigos QR de texto, enlaces, imágenes y más.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#0a7d3b",
+  "lang": "es",
+  "icons": [
+    {"src": "icons/icon-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-512x512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"}
+  ]
+}
