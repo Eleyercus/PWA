@@ -1,0 +1,23 @@
+{
+ "version": "2026.1.0",
+ "fecha": "2026-11-13",
+ "auditoria": "Auditoría interna anual 2026 (ejemplo)",
+ "cambios": [
+  "Primera edición de los protocolos de emergencia.",
+  "Se agrega el protocolo de atmósfera peligrosa para sótanos."
+ ],
+ "files": {
+  "content/manual.json": "4887fd79edaac8b93f4075ac99b8044404cde4f27aab4c595494fed076005a2f",
+  "css/styles.css": "0f3b319182f15e51594195ed449cae9a3bedafa82532f2d52074740cb875f858",
+  "hds/acetona.pdf": "db797be64afb91f63f9fce90f2d54be5ebb0e7d14e8bab197a14dac14718acd2",
+  "hds/hidroxido-sodio.pdf": "83655a9bf0a3c710f72ba612e780838d7f0832a565d462df7f2102aeae2140ea",
+  "icons/icon-192x192.png": "0127e19357dcca89b4df19d0a56a2dd51e65d47f59d42590ac19e040a10f0ef8",
+  "icons/icon-512x512.png": "8f65b6f167730beaa127f8a558e68000c8065faa54134f52f803bb36231f62dc",
+  "img/mapa-evacuacion.svg": "a4b23f389762236a0d6eafcd38506ac2d1ceb1943c95a19bd7cb5ad8517bb98e",
+  "index.html": "1f2eae92b9903d2bcd95e601ad3521c7a45436c4fd1e384f410ef8ca23794cb7",
+  "js/app.js": "7646fa4715d327017baf3d8beb4ab5a2a3601be159bf819bd1ebb2eea14ce4ef",
+  "js/store.js": "1726fcc4c56d8b1318f5b51688eb6670be28abfc28af8bf57a9906bf1a1a18eb",
+  "js/vendor/qrcode.js": "18ae399f81182bc9de916e9c77b195df20cc58d6f2d55a62b085a299f1bf1780",
+  "manifest.json": "ac0a0e97041b6ee1d5dfe120235de93a7630c1c512b018bb9f9a8914899a2726"
+ }
+}

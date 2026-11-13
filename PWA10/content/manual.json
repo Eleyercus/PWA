@@ -1,0 +1,166 @@
+{
+  "planta": "Manufacturas del Norte S.A. de C.V. (planta ficticia)",
+  "aviso": "Contenido de EJEMPLO para el proyecto escolar. Debe ser validado por el responsable de seguridad e higiene antes de usarse en una planta real.",
+  "puntoReunion": "Punto de reunión A: estacionamiento norte, junto a la bandera. Punto B (alterno): patio de maniobras, portón 2.",
+  "contactos": [
+    {"n": "Brigada de emergencia", "ext": "100"},
+    {"n": "Caseta de vigilancia", "ext": "101"},
+    {"n": "Enfermería", "ext": "102"},
+    {"n": "Supervisor de turno", "ext": "110"}
+  ],
+  "contactosNota": "Los teléfonos de pared marcados en rojo funcionan sin señal de celular. El 911 solo funciona si tu celular tiene señal.",
+  "protocolos": [
+    {
+      "id": "incendio", "titulo": "Incendio en máquina", "color": "rojo", "icono": "fuego",
+      "resumen": "Paro de emergencia, corte de energía y uso del extintor.",
+      "version": "3.1", "revision": "2026-03-12",
+      "urgente": "Si el fuego crece, hay humo denso o no puedes ver la salida: NO lo combatas. Activa la alarma y evacúa.",
+      "pasos": [
+        {"t": "Da la alarma", "d": "Grita «¡FUEGO!» y activa el pulsador de alarma más cercano. Avisa a la brigada (ext. 100)."},
+        {"t": "Paro de emergencia", "d": "Presiona el botón de paro de emergencia (hongo rojo) de la máquina. Si no lo alcanzas, no te acerques."},
+        {"t": "Corta la energía", "d": "Baja el interruptor general del tablero de la máquina, solo si está a tu alcance y sin tocar nada con las manos mojadas."},
+        {"t": "Combate el fuego solo si es pequeño", "d": "Solo si estás capacitado, el fuego es del tamaño de un bote de basura y tienes la salida a tu espalda. Técnica del extintor: Jalar el seguro, Apuntar a la base de las llamas, Apretar la palanca, Barrer de lado a lado.", "alerta": true},
+        {"t": "Si no se apaga en 30 segundos, evacúa", "d": "Sal por la ruta señalada, cierra las puertas detrás de ti sin ponerles seguro y ve al punto de reunión."},
+        {"t": "Repórtate", "d": "En el punto de reunión avisa a tu supervisor que estás a salvo y qué viste."}
+      ],
+      "noHacer": ["No uses agua en equipo eléctrico energizado.", "No uses elevadores.", "No regreses por tus pertenencias.", "No abras puertas calientes."],
+      "epp": [],
+      "relacionados": ["evacuacion", "electrico"],
+      "palabras": ["fuego", "llamas", "humo", "extintor", "quemando", "apagar maquina", "paro de emergencia"]
+    },
+    {
+      "id": "derrame", "titulo": "Derrame de sustancia química", "color": "amarillo", "icono": "gota",
+      "resumen": "Aislar, identificar, protegerse y contener.",
+      "version": "2.4", "revision": "2026-03-12",
+      "urgente": "Si hay vapores fuertes, mareo o ardor en ojos o nariz: sal del área, avisa a la brigada y no intentes limpiar.",
+      "pasos": [
+        {"t": "Aléjate y avisa", "d": "Retira a las personas del área, avisa a tu supervisor y a la brigada (ext. 100)."},
+        {"t": "Identifica la sustancia", "d": "Lee la etiqueta del envase (nombre y pictogramas) sin tocar el derrame. Abre la hoja de datos de seguridad (HDS) en esta app.", "alerta": true},
+        {"t": "Cierra la fuente y elimina chispas", "d": "Si es seguro, cierra la válvula o endereza el envase. Si el producto es inflamable, apaga equipos y no uses celulares ni interruptores cerca."},
+        {"t": "Colócate el equipo de protección", "d": "Mínimo: guantes resistentes a químicos, lentes de seguridad cerrados y calzado cerrado. Respirador solo si la HDS lo pide y estás capacitado."},
+        {"t": "Contén el derrame", "d": "Rodea el derrame con diques o cordones absorbentes, del exterior hacia el centro. Cubre con material absorbente."},
+        {"t": "No mezcles ni mandes al drenaje", "d": "Nunca mezcles sustancias distintas. No arrojes nada al drenaje. Recoge el residuo en bolsa o tambor rotulado como residuo peligroso."},
+        {"t": "Ventila y reporta", "d": "Ventila el área si la HDS lo permite. Registra el incidente con tu supervisor."}
+      ],
+      "noHacer": ["No toques el derrame sin guantes.", "No limpies con agua si la HDS lo prohíbe.", "No mezcles productos para neutralizar.", "No entres a un sótano con vapores sin autorización."],
+      "epp": ["Guantes resistentes a químicos", "Lentes de seguridad cerrados", "Calzado cerrado", "Respirador solo si la HDS lo exige"],
+      "primerosAuxilios": "Piel: quita la ropa contaminada y lava con agua 15 minutos en la regadera. Ojos: lavaojos 15 minutos, abriendo los párpados. Inhalación: sal al aire fresco. Siempre avisa a enfermería (ext. 102).",
+      "hds": [
+        {"nombre": "Acetona (ejemplo)", "archivo": "hds/acetona.pdf"},
+        {"nombre": "Hidróxido de sodio / sosa cáustica (ejemplo)", "archivo": "hds/hidroxido-sodio.pdf"}
+      ],
+      "relacionados": ["primeros-auxilios", "gas", "incendio"],
+      "palabras": ["quimico", "derrame", "fuga liquida", "acido", "solvente", "sosa", "tiner", "hds", "corrosivo"]
+    },
+    {
+      "id": "evacuacion", "titulo": "Evacuación del edificio", "color": "verde", "icono": "salida",
+      "resumen": "Qué hacer cuando suena la alarma general.",
+      "version": "2.0", "revision": "2026-03-12",
+      "urgente": "Suena la alarma continua: deja lo que haces y sal. Camina rápido, no corras.",
+      "pasos": [
+        {"t": "Deja todo y apaga lo que puedas", "d": "Solo si toma menos de 5 segundos: apaga tu máquina con el paro normal."},
+        {"t": "Sigue las flechas verdes", "d": "Usa la ruta de evacuación señalada. Ayuda a quien lo necesite."},
+        {"t": "Usa escaleras, nunca elevadores", "d": "En sótanos sube por la escalera de emergencia más cercana."},
+        {"t": "Ve al punto de reunión", "d": "Punto A: estacionamiento norte. Si está bloqueado, Punto B: patio de maniobras, portón 2."},
+        {"t": "Haz el conteo", "d": "Repórtate con tu jefe de brigada para ser contado. No salgas de la planta ni regreses hasta que se autorice."}
+      ],
+      "noHacer": ["No uses elevadores.", "No regreses por objetos personales.", "No bloquees puertas ni pasillos."],
+      "epp": [], "mapa": "img/mapa-evacuacion.svg",
+      "relacionados": ["incendio", "gas"],
+      "palabras": ["alarma", "salir", "ruta", "punto de reunion", "simulacro", "sotano"]
+    },
+    {
+      "id": "primeros-auxilios", "titulo": "Primeros auxilios básicos", "color": "verde", "icono": "cruz",
+      "resumen": "Hasta que llegue la brigada o enfermería.",
+      "version": "2.2", "revision": "2026-03-12",
+      "urgente": "Llama de inmediato a enfermería (ext. 102) o a la brigada (ext. 100). No muevas a un lesionado con posible golpe en cuello o espalda.",
+      "pasos": [
+        {"t": "Asegura la escena", "d": "Verifica que no haya peligro para ti: energía, químicos, humo. Si lo hay, no entres."},
+        {"t": "Pide ayuda", "d": "Que alguien llame a ext. 102 y 100 y traiga el botiquín y el DEA si hay."},
+        {"t": "Revisa si responde y respira", "d": "Háblale fuerte y toca sus hombros. Mira el pecho 10 segundos."},
+        {"t": "Si no responde y no respira: RCP", "d": "Compresiones en el centro del pecho, fuertes y rápidas: 100 a 120 por minuto, hundiendo unos 5 cm. Usa el DEA en cuanto llegue.", "alerta": true},
+        {"t": "Hemorragia", "d": "Presiona directamente la herida con tela limpia y no la retires; agrega más tela encima si se empapa."},
+        {"t": "Quemadura", "d": "Enfría con agua corriente 10 a 20 minutos. No revientes ampollas ni pongas cremas."},
+        {"t": "Choque eléctrico", "d": "No lo toques hasta cortar la energía o usar un aislante seco. Luego revisa respiración y pide ayuda."}
+      ],
+      "noHacer": ["No des de beber a una persona inconsciente.", "No muevas al lesionado sin necesidad.", "No retires objetos clavados."],
+      "epp": [], "relacionados": ["electrico", "derrame"],
+      "palabras": ["herido", "sangre", "quemadura", "inconsciente", "rcp", "choque", "lesion", "botiquin"]
+    },
+    {
+      "id": "gas", "titulo": "Fuga de gas o atmósfera peligrosa (sótanos)", "color": "amarillo", "icono": "nube",
+      "resumen": "Olor a gas, mareo o alarma de gases, sobre todo en sótanos.",
+      "version": "1.0", "revision": "2026-11-13",
+      "urgente": "Mareo, dolor de cabeza u olor extraño en un sótano: sal AHORA hacia arriba. No intentes rescatar a nadie entrando tú: avisa y espera a la brigada con equipo.",
+      "pasos": [
+        {"t": "Sal al aire fresco", "d": "Sube por la escalera. Si alguien se desmaya dentro, NO entres a ayudarlo sin equipo de respiración.", "alerta": true},
+        {"t": "Da la alarma desde un lugar seguro", "d": "Usa el teléfono de pared junto a la escalera (ext. 100). En sótanos no hay señal de celular."},
+        {"t": "Elimina fuentes de ignición", "d": "No enciendas ni apagues luces, no uses celular dentro, no operes equipos eléctricos en el área."},
+        {"t": "Cierra la fuente solo si es seguro", "d": "Si la válvula de corte está afuera del área afectada, ciérrala. Si no, déjalo a la brigada."},
+        {"t": "Impide el paso", "d": "Coloca la cinta o el cono de «PELIGRO» en la entrada y espera a la brigada."},
+        {"t": "Cuenta a tu equipo", "d": "Verifica quién estaba contigo dentro y díselo a la brigada."}
+      ],
+      "noHacer": ["No entres a rescatar a nadie sin equipo.", "No generes chispas ni llamas.", "No uses el elevador."],
+      "epp": [], "relacionados": ["evacuacion", "incendio", "primeros-auxilios"],
+      "palabras": ["gas", "fuga", "olor", "sotano", "espacio confinado", "mareo", "atmosfera", "amoniaco", "monoxido"]
+    },
+    {
+      "id": "electrico", "titulo": "Falla o accidente eléctrico", "color": "amarillo", "icono": "rayo",
+      "resumen": "Chispas, cables dañados, choque eléctrico.",
+      "version": "2.0", "revision": "2026-03-12",
+      "urgente": "Nunca toques a una persona que está recibiendo corriente. Primero corta la energía.",
+      "pasos": [
+        {"t": "Aléjate de los cables y charcos", "d": "Mantén distancia y no pises agua cerca del equipo."},
+        {"t": "Corta la energía", "d": "Presiona el paro de emergencia o baja el interruptor general del tablero, si puedes hacerlo con seguridad."},
+        {"t": "Si hay fuego eléctrico", "d": "Usa extintor de CO2 o polvo químico seco (PQS). Nunca agua. Sigue el protocolo de incendio."},
+        {"t": "Auxilia solo con la energía cortada", "d": "Si alguien recibió descarga y ya no hay corriente, revisa respiración y sigue primeros auxilios."},
+        {"t": "Señaliza y reporta", "d": "Coloca aviso de «NO OPERAR» y avisa a mantenimiento eléctrico y a tu supervisor."}
+      ],
+      "noHacer": ["No uses agua.", "No toques a la víctima con las manos.", "No restablezcas la energía tú mismo."],
+      "epp": [], "relacionados": ["incendio", "primeros-auxilios"],
+      "palabras": ["electricidad", "corriente", "cable", "chispa", "toque", "tablero", "choque"]
+    }
+  ],
+  "maquinas": [
+    {
+      "id": "prensa-3", "nombre": "Prensa hidráulica P-3", "zona": "Nave 1", "sinSenal": false,
+      "riesgos": ["Aceite hidráulico inflamable", "Atrapamiento", "Alta tensión en tablero"],
+      "datos": [
+        {"k": "Paro de emergencia", "v": "Hongo rojo en la columna izquierda y en el tablero lateral"},
+        {"k": "Corte de energía", "v": "Interruptor general T-3-Q1 (palanca roja del tablero T-3)"},
+        {"k": "Extintor", "v": "PQS ABC de 9 kg junto al tablero T-3"}
+      ],
+      "protocolos": ["incendio", "electrico", "primeros-auxilios", "evacuacion"]
+    },
+    {
+      "id": "pintura-1", "nombre": "Línea de pintura L-1", "zona": "Nave 2", "sinSenal": false,
+      "riesgos": ["Solventes inflamables", "Vapores", "Riesgo de incendio"],
+      "datos": [
+        {"k": "Paro de emergencia", "v": "Botón rojo en cada cabina y paro general en el pasillo central"},
+        {"k": "Extintor", "v": "CO2 de 6 kg en la entrada de cabina y PQS al fondo"},
+        {"k": "Ventilación", "v": "Extractores: botón verde en el tablero de la entrada. No los apagues durante un derrame"}
+      ],
+      "protocolos": ["incendio", "derrame", "gas", "evacuacion"]
+    },
+    {
+      "id": "almacen-a2", "nombre": "Almacén de químicos A-2", "zona": "Patio norte", "sinSenal": false,
+      "riesgos": ["Corrosivos", "Sustancias incompatibles", "Derrames"],
+      "datos": [
+        {"k": "Lavaojos y regadera", "v": "A la entrada, a 3 metros a la derecha"},
+        {"k": "Kit antiderrames", "v": "Gabinete amarillo junto a la puerta"},
+        {"k": "HDS impresas", "v": "En el tubo rojo de la entrada (y en esta app)"}
+      ],
+      "protocolos": ["derrame", "gas", "incendio", "primeros-auxilios"]
+    },
+    {
+      "id": "compresores-s1", "nombre": "Sótano -1 · Cuarto de compresores", "zona": "Sótano -1", "sinSenal": true,
+      "riesgos": ["Ventilación limitada", "Aire comprimido a alta presión", "Posible acumulación de gases", "Ruido"],
+      "datos": [
+        {"k": "Sin señal de celular", "v": "Usa el teléfono de pared rojo junto a la escalera (ext. 100)"},
+        {"k": "Paro de emergencia", "v": "Hongo rojo junto a la puerta y en cada compresor"},
+        {"k": "Salida", "v": "Escalera de emergencia a 15 metros, flechas verdes en el techo"}
+      ],
+      "protocolos": ["gas", "incendio", "evacuacion", "electrico"]
+    }
+  ]
+}
