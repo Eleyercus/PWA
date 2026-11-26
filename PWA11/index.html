@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b2a5b">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Reporte Ciudadano">
+  <title>Reporte Ciudadano · Cadereyta Jiménez</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192x192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Estado de conexión: siempre visible arriba -->
+  <div id="net" class="net checking" role="status" aria-live="polite">
+    <span class="dot" aria-hidden="true"></span>
+    <span id="netText">Comprobando conexión…</span>
+  </div>
+
+  <header class="top">
+    <div class="brand">
+      <img id="logoOficial" class="logo-slot" src="img/logo-policia.png" alt="Logotipo" hidden>
+      <img id="emblema" class="emblema" src="icons/icon-192x192.png" alt="">
+      <div>
+        <h1>Reporte Ciudadano</h1>
+        <p>Cadereyta Jiménez, Nuevo León</p>
+      </div>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Secciones">
+    <button role="tab" id="tabNuevo" aria-selected="true" aria-controls="viewNuevo">Nuevo reporte</button>
+    <button role="tab" id="tabLista" aria-selected="false" aria-controls="viewLista">Mis reportes <span id="count" class="badge">0</span></button>
+  </nav>
+
+  <main>
+    <!-- NUEVO -->
+    <section id="viewNuevo" role="tabpanel" aria-labelledby="tabNuevo">
+      <form id="form" novalidate autocomplete="off">
+        <label for="titulo">Título del reporte</label>
+        <input id="titulo" name="titulo" type="text" maxlength="80" placeholder="Ej. Lámpara descompuesta en calle Hidalgo" required>
+        <p class="err" id="errTitulo" hidden>Escribe un título.</p>
+
+        <label for="descripcion">Descripción</label>
+        <textarea id="descripcion" name="descripcion" rows="5" maxlength="1000" placeholder="¿Qué pasó? ¿Dónde? ¿Cuándo?" required></textarea>
+        <div class="hint"><span id="chars">0</span>/1000</div>
+        <p class="err" id="errDesc" hidden>Describe lo que quieres reportar.</p>
+
+        <span class="label">Fotos <small>(máximo <span id="maxFotos">4</span>)</small></span>
+        <div id="fotos" class="fotos"></div>
+        <div class="row">
+          <button type="button" id="btnCamara" class="btn primary">📷 Tomar foto</button>
+          <button type="button" id="btnGaleria" class="btn ghost">Elegir de galería</button>
+        </div>
+        <input id="inCamara" type="file" accept="image/*" capture="environment" hidden>
+        <input id="inGaleria" type="file" accept="image/*" multiple hidden>
+
+        <span class="label">Ubicación <small>(opcional)</small></span>
+        <div class="row">
+          <button type="button" id="btnUbi" class="btn ghost">📍 Agregar mi ubicación</button>
+          <span id="ubiTxt" class="hint"></span>
+        </div>
+
+        <p class="err" id="errForm" role="alert" hidden></p>
+        <button type="submit" class="btn save">Guardar reporte</button>
+      </form>
+
+      <aside class="aviso">
+        <b>Prototipo académico.</b> Esta app es un proyecto escolar de la UT Cadereyta y no es un canal oficial.
+        Los reportes se guardan solo en este teléfono y no se envían a ninguna autoridad.
+        <b>En una emergencia llama al 911.</b>
+      </aside>
+    </section>
+
+    <!-- LISTA -->
+    <section id="viewLista" role="tabpanel" aria-labelledby="tabLista" hidden>
+      <div id="vacio" class="vacio" hidden>
+        <p>Aún no tienes reportes guardados.</p>
+        <button class="btn primary" id="irNuevo">Crear el primero</button>
+      </div>
+      <ul id="lista" class="lista"></ul>
+      <div class="espacio" id="espacio" hidden>
+        <div class="bar"><div id="barFill"></div></div>
+        <p id="espacioTxt" class="hint"></p>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="detalle">
+    <article>
+      <h2 id="dTitulo"></h2>
+      <p class="meta" id="dMeta"></p>
+      <p id="dDesc" class="desc"></p>
+      <div id="dFotos" class="fotos grande"></div>
+      <p id="dUbi" class="meta"></p>
+      <div class="row">
+        <button class="btn primary" id="dCompartir">Compartir</button>
+        <button class="btn danger" id="dBorrar">Eliminar</button>
+        <button class="btn ghost" id="dCerrar">Cerrar</button>
+      </div>
+    </article>
+  </dialog>
+
+  <dialog id="visor" class="visor"><img id="visorImg" alt="Foto del reporte"><button class="btn ghost" id="visorCerrar">Cerrar</button></dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
